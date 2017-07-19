@@ -11,37 +11,41 @@ const API_KEY = '?key=RECHE1982';
 export const fetchPosts = () => {
   const request = axios.get(`${ROOT_URL}/posts${API_KEY}`);
 
-  return {
-    type: FETCH_POSTS,
-    payload: request,
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({ type: FETCH_POSTS, payload: data });
+    });
   };
 };
 
 export const createPost = (values, callback) => {
-  const request = axios.post(`${ROOT_URL}/posts${API_KEY}`,values)
-    .then(() => callback());
+  const request = axios.post(`${ROOT_URL}/posts${API_KEY}`,values);
 
-  return {
-    type: CREATE_POST,
-    payload: request,
+  return (dispatch) => {
+    request.then((data) => {
+      callback();
+      dispatch({ type: CREATE_POST, payload: data });
+    });
   };
 };
 
 export const fetchPost = (id) => {
   const request = axios.get(`${ROOT_URL}/posts/${id}${API_KEY}`);
 
-  return {
-    type: FETCH_POST,
-    payload: request,
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({ type: FETCH_POST, payload: data });
+    });
   };
 };
 
 export const deletePost = (id, callback) => {
-  const request = axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`)
-    .then(() => callback())
+  const request = axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`);
 
-  return {
-    type: DELETE_POST,
-    payload: id,
+  return (dispatch) => {
+    request.then(() => {
+      callback()
+      dispatch({ type: DELETE_POST, payload: id });
+    });
   };
 };
